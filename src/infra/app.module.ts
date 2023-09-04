@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { envSchema } from './env/env';
 import { EnvModule } from './env/env.module';
+import { HttpModule } from './http/http.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { EnvModule } from './env/env.module';
       isGlobal: true,
     }),
     EnvModule,
+    HttpModule,
   ],
   controllers: [],
   providers: [],
