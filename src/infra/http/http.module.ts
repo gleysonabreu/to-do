@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
+import { Database } from '../database/database.module';
 
-@Module({})
+@Module({
+  imports: [Database],
+})
 export class HttpModule {}
