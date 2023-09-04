@@ -20,4 +20,6 @@ model User {
   password  String
   username  String   @unique
   role      UserRole @default(USER)
+
+  @@map("users")
 }
