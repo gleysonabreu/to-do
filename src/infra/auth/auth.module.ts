@@ -19,8 +19,8 @@ import { JwtAuthGuard } from './guards/jwt-auth.guard';
 
         return {
           signOptions: { algorithm: 'RS256' },
-          privateKey: Buffer.from(privateKey, 'base64'),
-          publicKey: Buffer.from(publicKey, 'base64'),
+          privateKey,
+          publicKey,
         };
       },
     }),
