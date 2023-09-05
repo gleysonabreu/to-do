@@ -11,6 +11,7 @@ import {
 import { z } from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
 import { UserAlreadyExistsError } from '@/domain/user/use-cases/errors/user-already-exists-error';
+import { Public } from '@/infra/auth/is-public';
 
 const createAccountBodySchema = z.object({
   firstName: z.string().min(2),
@@ -27,6 +28,7 @@ export class CreateAccount {
   constructor(private registerUser: RegisterUserUseCase) {}
 
   @Post()
+  @Public()
   @HttpCode(201)
   @UsePipes(new ZodValidationPipe(createAccountBodySchema))
   async handle(@Body() body: CreateAccountBodySchema) {
