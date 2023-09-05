@@ -21,5 +21,31 @@ model User {
   username  String   @unique
   role      UserRole @default(USER)
 
+  todos Todo[]
+
   @@map("users")
+}
+
+model Todo {
+  id          String  @id @default(uuid())
+  title       String
+  description String?
+  userId      String  @map("user_id")
+
+  user      User       @relation(fields: [userId], references: [id])
+  todoItems TodoItem[]
+
+  @@map("todos")
+}
+
+model TodoItem {
+  id          String  @id @default(uuid())
+  name        String
+  description String?
+  check       Boolean @default(false)
+  todoId      String  @map("todo_id")
+
+  todo Todo @relation(fields: [todoId], references: [id])
+
+  @@map("todo_items")
 }
