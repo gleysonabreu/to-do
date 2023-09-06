@@ -42,7 +42,7 @@ export class TodoItem extends Entity<TodoItemProps> {
     this.props.check = false;
   }
 
-  static create(props: Optional<TodoItem, 'check'>, id?: UniqueEntityID) {
+  static create(props: Optional<TodoItemProps, 'check'>, id?: UniqueEntityID) {
     const todoItem = new TodoItem(
       {
         ...props,
