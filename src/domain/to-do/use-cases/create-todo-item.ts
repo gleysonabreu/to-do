@@ -1,11 +1,11 @@
 import { Either, left, right } from '@/core/either';
 import { TodoItemRepository } from '../repositories/todo-item-repository';
-import { TodoNotExistsError } from './errors/todo-not-exists-error';
 import { TodoItem } from '../entities/todo-item';
 import { Injectable } from '@nestjs/common';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { TodoRepository } from '../repositories/todo-repository';
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error';
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error';
 
 interface CreateTodoItemUseCaseRequest {
   name: string;
@@ -15,7 +15,7 @@ interface CreateTodoItemUseCaseRequest {
 }
 
 type CreateTodoItemUseCaseResponse = Either<
-  TodoNotExistsError,
+  ResourceNotFoundError | NotAllowedError,
   {
     todoItem: TodoItem;
   }
@@ -37,7 +37,7 @@ export class CreateTodoItemUseCase {
     const todo = await this.todoRepository.findById(todoId);
 
     if (!todo) {
-      return left(new TodoNotExistsError(todoId));
+      return left(new ResourceNotFoundError());
     }
 
     if (todo.userId.toString() !== userId) {

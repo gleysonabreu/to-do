@@ -1,10 +1,10 @@
 import { InMemoryTodoRepository } from '../../../../test/repositories/in-memory-todos-repository';
 import { InMemoryTodoItemRepository } from '../../../../test/repositories/in-memory-todo-items-repository';
 import { CreateTodoItemUseCase } from './create-todo-item';
-import { TodoNotExistsError } from './errors/todo-not-exists-error';
 import { makeTodo } from '../../../../test/factories/make-todo';
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error';
 import { UniqueEntityID } from '@/core/entities/unique-entity-id';
+import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error';
 
 let sut: CreateTodoItemUseCase;
 let inMemoryCreateTodoItemRepository: InMemoryTodoItemRepository;
@@ -44,8 +44,8 @@ describe('Create To-do Item', () => {
     });
 
     expect(result.isLeft()).toBe(true);
-    expect(result.value).toBeInstanceOf(TodoNotExistsError);
-    expect(result.value).toEqual(new TodoNotExistsError(todoId));
+    expect(result.value).toBeInstanceOf(ResourceNotFoundError);
+    expect(result.value).toEqual(new ResourceNotFoundError());
   });
 
   it('should not be able to create a new todo item if todo is not yours', async () => {
