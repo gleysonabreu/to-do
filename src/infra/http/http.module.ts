@@ -9,6 +9,8 @@ import { CreateTodoController } from './controllers/create-todo.controller';
 import { CreateTodoUseCase } from '@/domain/to-do/use-cases/create-todo';
 import { CreateTodoItemController } from './controllers/create-todo-item.controller';
 import { CreateTodoItemUseCase } from '@/domain/to-do/use-cases/create-todo-item';
+import { DeleteTodoItemController } from './controllers/delete-todo-item.controller';
+import { DeleteTodoItemUseCase } from '@/domain/to-do/use-cases/delete-todo-item';
 
 @Module({
   imports: [Database, CryptographyModule],
@@ -17,12 +19,14 @@ import { CreateTodoItemUseCase } from '@/domain/to-do/use-cases/create-todo-item
     AuthenticateUserController,
     CreateTodoController,
     CreateTodoItemController,
+    DeleteTodoItemController,
   ],
   providers: [
     RegisterUserUseCase,
     AuthenticateUserUseCase,
     CreateTodoUseCase,
     CreateTodoItemUseCase,
+    DeleteTodoItemUseCase,
   ],
 })
 export class HttpModule {}
