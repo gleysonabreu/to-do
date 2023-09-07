@@ -9,7 +9,6 @@ import {
   Param,
   Post,
   UnauthorizedException,
-  UsePipes,
 } from '@nestjs/common';
 import { z } from 'zod';
 import { ZodValidationPipe } from '../pipes/zod-validation-pipe';
@@ -32,7 +31,7 @@ type CreateTodoItemParam = {
 export class CreateTodoItemController {
   constructor(private createTodoItemUseCase: CreateTodoItemUseCase) {}
 
-  @Post(':id/item')
+  @Post(':id/items')
   async handle(
     @Body(validationPipeZodBody) body: CreateTodoBodySchema,
     @Param() param: CreateTodoItemParam,
