@@ -8,6 +8,16 @@ import { PrismaTodoMapper } from '../mappers/prisma-todo-mapper';
 export class PrismaTodoRepository implements TodoRepository {
   constructor(private prisma: PrismaService) {}
 
+  async getTodosByUserId(userId: string): Promise<Todo[]> {
+    const todos = await this.prisma.todo.findMany({
+      where: {
+        userId,
+      },
+    });
+
+    return todos.map(PrismaTodoMapper.toDomain);
+  }
+
   async delete(todo: Todo): Promise<void> {
     const data = PrismaTodoMapper.toPrisma(todo);
 

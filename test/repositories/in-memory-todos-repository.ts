@@ -4,6 +4,14 @@ import { TodoRepository } from '@/domain/to-do/repositories/todo-repository';
 export class InMemoryTodoRepository implements TodoRepository {
   public todos: Todo[] = [];
 
+  async getTodosByUserId(userId: string): Promise<Todo[]> {
+    const todos = this.todos.filter(
+      (item) => item.userId.toString() === userId,
+    );
+
+    return todos;
+  }
+
   async delete(todo: Todo): Promise<void> {
     const removeTodo = this.todos.filter(
       (item) => item.id.toString() !== todo.id.toString(),
