@@ -8,6 +8,16 @@ import { PrismaTodoItemMapper } from '../mappers/prisma-todo-item-mapper';
 export class PrismaTodoItemsRepository implements TodoItemRepository {
   constructor(private prisma: PrismaService) {}
 
+  async fetchItemsByTodoId(todoId: string): Promise<TodoItem[]> {
+    const todoItems = await this.prisma.todoItem.findMany({
+      where: {
+        todoId,
+      },
+    });
+
+    return todoItems.map(PrismaTodoItemMapper.toDomain);
+  }
+
   async delete(id: string): Promise<void> {
     await this.prisma.todoItem.delete({
       where: {

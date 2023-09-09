@@ -4,6 +4,11 @@ import { TodoItemRepository } from '@/domain/to-do/repositories/todo-item-reposi
 export class InMemoryTodoItemRepository implements TodoItemRepository {
   public todoItems: TodoItem[] = [];
 
+  async fetchItemsByTodoId(todoId: string): Promise<TodoItem[]> {
+    const items = this.todoItems.filter((item) => item.todoId.toString() === todoId);
+    return items;
+  }
+
   async delete(id: string): Promise<void> {
     const items = this.todoItems.filter((item) => item.id.toString() !== id);
     this.todoItems = items;
