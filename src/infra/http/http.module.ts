@@ -15,6 +15,8 @@ import { DeleteTodoController } from './controllers/delete-todo.controller';
 import { DeleteTodoUseCase } from '@/domain/to-do/use-cases/delete-todo';
 import { FetchTodosController } from './controllers/fetch-todos.controller';
 import { FetchTodosUseCase } from '@/domain/to-do/use-cases/fetch-todos';
+import { GetTodoByidController } from './controllers/get-todo-by-id.controller';
+import { GetTodoById } from '@/domain/to-do/use-cases/get-todo-by-id';
 
 @Module({
   imports: [Database, CryptographyModule],
@@ -26,6 +28,7 @@ import { FetchTodosUseCase } from '@/domain/to-do/use-cases/fetch-todos';
     DeleteTodoItemController,
     DeleteTodoController,
     FetchTodosController,
+    GetTodoByidController,
   ],
   providers: [
     RegisterUserUseCase,
@@ -35,6 +38,7 @@ import { FetchTodosUseCase } from '@/domain/to-do/use-cases/fetch-todos';
     DeleteTodoItemUseCase,
     DeleteTodoUseCase,
     FetchTodosUseCase,
+    GetTodoById,
   ],
 })
 export class HttpModule {}
