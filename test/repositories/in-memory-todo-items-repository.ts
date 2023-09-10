@@ -4,8 +4,18 @@ import { TodoItemRepository } from '@/domain/to-do/repositories/todo-item-reposi
 export class InMemoryTodoItemRepository implements TodoItemRepository {
   public todoItems: TodoItem[] = [];
 
+  async save(todoItem: TodoItem): Promise<void> {
+    const findIndex = this.todoItems.findIndex(
+      (item) => item.id.toString() === todoItem.id.toString(),
+    );
+
+    this.todoItems[findIndex] = todoItem;
+  }
+
   async fetchItemsByTodoId(todoId: string): Promise<TodoItem[]> {
-    const items = this.todoItems.filter((item) => item.todoId.toString() === todoId);
+    const items = this.todoItems.filter(
+      (item) => item.todoId.toString() === todoId,
+    );
     return items;
   }
 

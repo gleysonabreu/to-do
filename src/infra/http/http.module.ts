@@ -19,6 +19,9 @@ import { GetTodoByidController } from './controllers/get-todo-by-id.controller';
 import { GetTodoById } from '@/domain/to-do/use-cases/get-todo-by-id';
 import { FetchItemsByTodoIdController } from './controllers/fetch-items-by-todo-id.controller';
 import { FetchItemsByTodoId } from '@/domain/to-do/use-cases/fetch-items-by-todo-id';
+import { CheckTodoItemController } from './controllers/check-todo-item.controller';
+import { DoneTodoItemUseCase } from '@/domain/to-do/use-cases/done-todo-item';
+import { UnDoneTodoItemUseCase } from '@/domain/to-do/use-cases/undone-todo-item';
 
 @Module({
   imports: [Database, CryptographyModule],
@@ -32,6 +35,7 @@ import { FetchItemsByTodoId } from '@/domain/to-do/use-cases/fetch-items-by-todo
     FetchTodosController,
     GetTodoByidController,
     FetchItemsByTodoIdController,
+    CheckTodoItemController,
   ],
   providers: [
     RegisterUserUseCase,
@@ -43,6 +47,8 @@ import { FetchItemsByTodoId } from '@/domain/to-do/use-cases/fetch-items-by-todo
     FetchTodosUseCase,
     GetTodoById,
     FetchItemsByTodoId,
+    DoneTodoItemUseCase,
+    UnDoneTodoItemUseCase,
   ],
 })
 export class HttpModule {}
