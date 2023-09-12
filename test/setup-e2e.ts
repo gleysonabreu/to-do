@@ -6,31 +6,34 @@ import NodeEnvironment from 'jest-environment-node';
 import type { JestEnvironmentConfig } from '@jest/environment';
 import type { EnvironmentContext } from '@jest/environment';
 
-const prisma = new PrismaClient();
-
 export default class PrismaTestEnvironmentSetup extends NodeEnvironment {
   private schemaId: string;
+  private prisma: PrismaClient;
+  private databaseURL: string;
 
   constructor(config: JestEnvironmentConfig, _context: EnvironmentContext) {
     super(config, _context);
 
     this.schemaId = randomUUID();
+    this.databaseURL = this.generateUniqueDatabaseURL(this.schemaId);
+    this.prisma = new PrismaClient();
   }
 
   async setup() {
-    const databaseURL = this.generateUniqueDatabaseURL(this.schemaId);
-
-    process.env.DATABASE_URL = databaseURL;
+    process.env.DATABASE_URL = this.databaseURL;
+    this.global.process.env.DATABASE_URL = this.databaseURL;
 
     execSync('pnpm prisma migrate deploy');
+
     return super.setup();
   }
 
   async teardown() {
-    await prisma.$executeRawUnsafe(
+    await this.prisma.$executeRawUnsafe(
       `DROP SCHEMA IF EXISTS "${this.schemaId}" CASCADE`,
     );
-    await prisma.$disconnect();
+    await this.prisma.$disconnect();
+    return super.teardown();
   }
 
   private generateUniqueDatabaseURL(schemaId: string) {
