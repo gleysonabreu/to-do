@@ -1,5 +1,5 @@
 import { Prisma, TodoItem as PrismaTodoItem } from '@prisma/client';
-import { UniqueEntityID } from 'src/core/entities/unique-entity-id';
+import { UniqueEntityID } from '@/core/entities/unique-entity-id';
 import { TodoItem } from '@/domain/to-do/entities/todo-item';
 
 export class PrismaTodoItemMapper {
