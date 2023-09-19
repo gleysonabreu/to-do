@@ -4,6 +4,16 @@ import { UsersRepository } from '../../src/domain/user/repositories/users-reposi
 export class InMemoryUsersRepository extends UsersRepository {
   public users: User[] = [];
 
+  async findById(id: string): Promise<User> {
+    const user = this.users.find((user) => user.id.toString() === id);
+
+    if (!user) {
+      return null;
+    }
+
+    return user;
+  }
+
   async findByEmail(email: string): Promise<User> {
     const user = this.users.find((user) => user.email === email);
 
