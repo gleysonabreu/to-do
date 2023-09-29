@@ -25,6 +25,12 @@ describe('Fetch To-dos', () => {
       todos: expect.any(Array),
     });
     expect(result.value.todos.length).toEqual(1);
-    expect(result.value.todos[0]).toEqual(todo);
+    expect(result.value).toMatchObject({
+      todos: expect.arrayContaining([
+        expect.objectContaining({
+          title: todo.title,
+        }),
+      ]),
+    });
   });
 });

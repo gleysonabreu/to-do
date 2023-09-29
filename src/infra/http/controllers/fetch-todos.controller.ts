@@ -2,7 +2,7 @@ import { FetchTodosUseCase } from '@/domain/to-do/use-cases/fetch-todos';
 import { CurrentUser } from '@/infra/auth/decorators/current-user.decorator';
 import { UserPayload } from '@/infra/auth/strategies/jwt.strategy';
 import { BadRequestException, Controller, Get } from '@nestjs/common';
-import { TodoPresenter } from '../presenters/todo-presenter';
+import { TodoDetailsPresenter } from '../presenters/todo-details-presenter';
 
 @Controller('/todos')
 export class FetchTodosController {
@@ -20,6 +20,6 @@ export class FetchTodosController {
 
     const todos = result.value.todos;
 
-    return { todos: todos.map(TodoPresenter.toHTTP) };
+    return { todos: todos.map(TodoDetailsPresenter.toHTTP) };
   }
 }

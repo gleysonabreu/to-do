@@ -1,7 +1,7 @@
 import { Either, right } from '@/core/either';
-import { Todo } from '../entities/todo';
 import { Injectable } from '@nestjs/common';
 import { TodoRepository } from '../repositories/todo-repository';
+import { TodoDetails } from '../entities/value-objects/todo-details';
 
 interface FetchTodosUseCaseRequest {
   userId: string;
@@ -10,7 +10,7 @@ interface FetchTodosUseCaseRequest {
 type FetchTodosUseCaseResponse = Either<
   null,
   {
-    todos: Todo[];
+    todos: TodoDetails[];
   }
 >;
 
