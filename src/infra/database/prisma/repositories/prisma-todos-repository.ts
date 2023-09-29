@@ -14,10 +14,31 @@ export class PrismaTodoRepository implements TodoRepository {
   constructor(private prisma: PrismaService) {}
 
   async getTodosByUserId(userId: string): Promise<TodoDetails[]> {
-    const todos = await this.prisma.$queryRaw<PrismaTodoDetails[]>`SELECT *, 
-      (SELECT CAST(COUNT(*) as DECIMAL) FROM todos as T JOIN todo_items as TI ON T.id = TI.todo_id WHERE T.user_id = ${userId}) as amount,
-      (SELECT CAST(COUNT(*) as DECIMAL) FROM todos as T JOIN todo_items as TI ON T.id = TI.todo_id WHERE T.user_id = ${userId} AND TI.check = true) as completed
-      FROM todos WHERE user_id = ${userId}`;
+    const todos = await this.prisma.$queryRaw<
+      PrismaTodoDetails[]
+    >`SELECT T.id, T.title, T.description, T.user_id,
+    COALESCE(selection_amount.amount, 0) as amount,
+    COALESCE(selection_completed.completed, 0) as completed
+    FROM todos as T
+    LEFT JOIN 
+    (
+      SELECT todo_items.todo_id,
+      CAST(COUNT(*) as INT) AS amount
+      FROM todo_items
+      GROUP BY todo_items.todo_id
+    )
+    AS selection_amount
+    ON T.id = selection_amount.todo_id
+    LEFT JOIN
+    (
+      SELECT todo_items.todo_id,
+      CAST(COUNT(*) as INT) AS completed
+      FROM todo_items
+      WHERE todo_items.check = true
+      GROUP BY todo_items.todo_id
+    ) as selection_completed
+    ON T.id = selection_completed.todo_id
+    WHERE T.user_id = ${userId}`;
 
     return todos.map(PrismaTodoDetailsMapper.toDomain);
   }
