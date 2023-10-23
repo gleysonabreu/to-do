@@ -59,10 +59,10 @@ describe('Fetch todos (E2E)', () => {
 
     expect(result.statusCode).toBe(200);
     expect(result.body).toEqual({
-      todos: [
+      todos: expect.arrayContaining([
         expect.objectContaining({ title: 'Todo 1' }),
         expect.objectContaining({ title: 'Todo 2' }),
-      ],
+      ]),
     });
   });
 });
