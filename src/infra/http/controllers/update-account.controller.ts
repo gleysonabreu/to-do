@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Body,
+  ConflictException,
   Controller,
   HttpCode,
   NotFoundException,
@@ -12,6 +13,7 @@ import { UpdateAccountUseCase } from '@/domain/user/use-cases/update-account';
 import { CurrentUser } from '@/infra/auth/decorators/current-user.decorator';
 import { UserPayload } from '@/infra/auth/strategies/jwt.strategy';
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error';
+import { UserAlreadyExistsError } from '@/domain/user/use-cases/errors/user-already-exists-error';
 
 const updateUserBodySchema = z.object({
   firstName: z.string().min(2),
@@ -49,9 +51,10 @@ export class UpdateAccountController {
       switch (error.constructor) {
         case ResourceNotFoundError:
           throw new NotFoundException(error.message);
-
+        case UserAlreadyExistsError:
+          throw new ConflictException(error.message);
         default:
-          throw new BadRequestException();
+          throw new BadRequestException(error.message);
       }
     }
   }
