@@ -4,6 +4,14 @@ import { UsersRepository } from '../../src/domain/user/repositories/users-reposi
 export class InMemoryUsersRepository extends UsersRepository {
   public users: User[] = [];
 
+  async save(user: User): Promise<void> {
+    const findIndex = this.users.findIndex(
+      (item) => item.id.toString() === user.id.toString(),
+    );
+
+    this.users[findIndex] = user;
+  }
+
   async findById(id: string): Promise<User> {
     const user = this.users.find((user) => user.id.toString() === id);
 
