@@ -11,6 +11,7 @@ export class PrismaUserMapper {
         lastName: raw.lastName,
         password: raw.password,
         username: raw.username,
+        isPublic: raw.isPublic,
       },
       new UniqueEntityID(raw.id),
     );
@@ -24,6 +25,7 @@ export class PrismaUserMapper {
       lastName: user.lastName,
       password: user.password,
       username: user.username,
+      isPublic: user.isPublic,
     };
   }
 }

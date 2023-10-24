@@ -8,6 +8,7 @@ export class UserPresenter {
       last_name: user.lastName,
       email: user.email,
       username: user.username,
+      isPublic: user.isPublic,
     };
   }
 }
