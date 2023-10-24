@@ -26,6 +26,8 @@ import { MeController } from './controllers/me.controller';
 import { GetCurrentUserUseCase } from '@/domain/user/use-cases/get-current-user';
 import { UpdateAccountController } from './controllers/update-account.controller';
 import { UpdateAccountUseCase } from '@/domain/user/use-cases/update-account';
+import { UpdateProfileUseCase } from '@/domain/user/use-cases/update-profile';
+import { UpdateProfileController } from './controllers/update-profile.controller';
 
 @Module({
   imports: [Database, CryptographyModule],
@@ -42,6 +44,7 @@ import { UpdateAccountUseCase } from '@/domain/user/use-cases/update-account';
     CheckTodoItemController,
     MeController,
     UpdateAccountController,
+    UpdateProfileController,
   ],
   providers: [
     RegisterUserUseCase,
@@ -57,6 +60,7 @@ import { UpdateAccountUseCase } from '@/domain/user/use-cases/update-account';
     UnDoneTodoItemUseCase,
     GetCurrentUserUseCase,
     UpdateAccountUseCase,
+    UpdateProfileUseCase,
   ],
 })
 export class HttpModule {}
