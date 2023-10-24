@@ -7,6 +7,7 @@ export interface UserProps {
   email: string;
   password: string;
   username: string;
+  isPublic?: boolean;
 }
 
 export class User extends Entity<UserProps> {
@@ -50,8 +51,26 @@ export class User extends Entity<UserProps> {
     return this.props.username;
   }
 
+  get isPublic() {
+    return this.props.isPublic;
+  }
+
+  enableProfile() {
+    this.props.isPublic = true;
+  }
+
+  disableProfile() {
+    this.props.isPublic = false;
+  }
+
   static create(props: UserProps, id?: UniqueEntityID) {
-    const user = new User(props, id);
+    const user = new User(
+      {
+        ...props,
+        isPublic: props.isPublic ?? false,
+      },
+      id,
+    );
     return user;
   }
 }

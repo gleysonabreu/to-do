@@ -13,6 +13,7 @@ export function makeUser(
       lastName: faker.person.lastName(),
       password: faker.internet.password(),
       username: faker.internet.userName(),
+      isPublic: faker.datatype.boolean(),
       ...override,
     },
     id,
