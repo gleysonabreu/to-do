@@ -1,7 +1,6 @@
 import { AppModule } from '@/infra/app.module';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
 import { INestApplication } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import { User } from '@prisma/client';
 import { hash } from 'bcryptjs';
@@ -11,7 +10,6 @@ describe('Fetch todos (E2E)', () => {
   let app: INestApplication;
   let prisma: PrismaService;
   let user: User;
-  let jwt: JwtService;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -21,7 +19,6 @@ describe('Fetch todos (E2E)', () => {
     app = moduleRef.createNestApplication();
 
     prisma = moduleRef.get(PrismaService);
-    jwt = moduleRef.get(JwtService);
 
     user = await prisma.user.create({
       data: {
@@ -36,7 +33,7 @@ describe('Fetch todos (E2E)', () => {
     await app.init();
   });
 
-  test('[GET] /todos - should be able to fetch todos', async () => {
+  test('[GET] /users/:id/todos - should be able to fetch todos', async () => {
     await prisma.todo.createMany({
       data: [
         {
@@ -52,10 +49,9 @@ describe('Fetch todos (E2E)', () => {
       ],
     });
 
-    const accessToken = jwt.sign({ sub: user.id });
-    const result = await request(app.getHttpServer())
-      .get(`/todos`)
-      .set('Authorization', `Bearer ${accessToken}`);
+    const result = await request(app.getHttpServer()).get(
+      `/users/${user.id}/todos`,
+    );
 
     expect(result.statusCode).toBe(200);
     expect(result.body).toEqual({

@@ -1,16 +1,20 @@
 import { FetchTodosUseCase } from '@/domain/to-do/use-cases/fetch-todos';
-import { CurrentUser } from '@/infra/auth/decorators/current-user.decorator';
-import { UserPayload } from '@/infra/auth/strategies/jwt.strategy';
-import { BadRequestException, Controller, Get } from '@nestjs/common';
+import { BadRequestException, Controller, Get, Param } from '@nestjs/common';
 import { TodoDetailsPresenter } from '../presenters/todo-details-presenter';
+import { Public } from '@/infra/auth/is-public';
 
-@Controller('/todos')
+type FetchTodosControllerParams = {
+  id: string;
+};
+
+@Controller('/users')
 export class FetchTodosController {
   constructor(private fetchTodosUseCase: FetchTodosUseCase) {}
 
-  @Get()
-  async handle(@CurrentUser() currentUser: UserPayload) {
-    const { sub: userId } = currentUser;
+  @Public()
+  @Get(':id/todos')
+  async handle(@Param() params: FetchTodosControllerParams) {
+    const { id: userId } = params;
 
     const result = await this.fetchTodosUseCase.execute({ userId });
 

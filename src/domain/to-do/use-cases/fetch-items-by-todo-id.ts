@@ -7,7 +7,6 @@ import { Either, left, right } from '@/core/either';
 import { Injectable } from '@nestjs/common';
 
 interface FetchItemsByTodoIdRequest {
-  userId: string;
   todoId: string;
 }
 
@@ -27,16 +26,11 @@ export class FetchItemsByTodoId {
 
   async execute({
     todoId,
-    userId,
   }: FetchItemsByTodoIdRequest): Promise<FetchItemsByTodoIdResponse> {
     const todo = await this.todoRepository.findById(todoId);
 
     if (!todo) {
       return left(new ResourceNotFoundError());
-    }
-
-    if (todo.userId.toString() !== userId) {
-      return left(new NotAllowedError());
     }
 
     const todoItems = await this.todoItemRepository.fetchItemsByTodoId(todoId);

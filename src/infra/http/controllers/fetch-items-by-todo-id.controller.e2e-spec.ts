@@ -1,7 +1,6 @@
 import { AppModule } from '@/infra/app.module';
 import { PrismaService } from '@/infra/database/prisma/prisma.service';
 import { INestApplication } from '@nestjs/common';
-import { JwtService } from '@nestjs/jwt';
 import { Test } from '@nestjs/testing';
 import { Todo, User } from '@prisma/client';
 import { hash } from 'bcryptjs';
@@ -12,7 +11,6 @@ describe('Fetch items by todo id (E2E)', () => {
   let prisma: PrismaService;
   let user: User;
   let todo: Todo;
-  let jwt: JwtService;
 
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
@@ -22,7 +20,6 @@ describe('Fetch items by todo id (E2E)', () => {
     app = moduleRef.createNestApplication();
 
     prisma = moduleRef.get(PrismaService);
-    jwt = moduleRef.get(JwtService);
 
     user = await prisma.user.create({
       data: {
@@ -61,10 +58,9 @@ describe('Fetch items by todo id (E2E)', () => {
       ],
     });
 
-    const accessToken = jwt.sign({ sub: user.id });
-    const result = await request(app.getHttpServer())
-      .get(`/todos/${todo.id}/items`)
-      .set('Authorization', `Bearer ${accessToken}`);
+    const result = await request(app.getHttpServer()).get(
+      `/todos/${todo.id}/items`,
+    );
 
     expect(result.statusCode).toBe(200);
     expect(result.body).toEqual({
@@ -76,29 +72,10 @@ describe('Fetch items by todo id (E2E)', () => {
   });
 
   test('[GET] /todos/:todoId/items - should not be able to fetch items if todo not exists', async () => {
-    const accessToken = jwt.sign({ sub: user.id });
-    const result = await request(app.getHttpServer())
-      .get(`/todos/any-todo-id/items`)
-      .set('Authorization', `Bearer ${accessToken}`);
+    const result = await request(app.getHttpServer()).get(
+      `/todos/any-todo-id/items`,
+    );
 
     expect(result.statusCode).toBe(404);
-  });
-
-  test('[GET] /todos/:todoId/items - should not be able to fetch items if todo is not yours', async () => {
-    const userOther = await prisma.user.create({
-      data: {
-        email: 'johndoe@example.com.other',
-        lastName: 'Doe',
-        firstName: 'John',
-        username: 'johndoe.other',
-        password: await hash('123456', 8),
-      },
-    });
-    const accessToken = jwt.sign({ sub: userOther.id });
-    const result = await request(app.getHttpServer())
-      .get(`/todos/${todo.id}/items`)
-      .set('Authorization', `Bearer ${accessToken}`);
-
-    expect(result.statusCode).toBe(401);
   });
 });

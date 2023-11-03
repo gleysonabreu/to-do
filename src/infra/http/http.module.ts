@@ -15,7 +15,7 @@ import { DeleteTodoController } from './controllers/delete-todo.controller';
 import { DeleteTodoUseCase } from '@/domain/to-do/use-cases/delete-todo';
 import { FetchTodosController } from './controllers/fetch-todos.controller';
 import { FetchTodosUseCase } from '@/domain/to-do/use-cases/fetch-todos';
-import { GetTodoByidController } from './controllers/get-todo-by-id.controller';
+import { GetTodoByIdController } from './controllers/get-todo-by-id.controller';
 import { GetTodoById } from '@/domain/to-do/use-cases/get-todo-by-id';
 import { FetchItemsByTodoIdController } from './controllers/fetch-items-by-todo-id.controller';
 import { FetchItemsByTodoId } from '@/domain/to-do/use-cases/fetch-items-by-todo-id';
@@ -41,7 +41,7 @@ import { FindUserByUsernameController } from './controllers/find-user-by-usernam
     DeleteTodoItemController,
     DeleteTodoController,
     FetchTodosController,
-    GetTodoByidController,
+    GetTodoByIdController,
     FetchItemsByTodoIdController,
     CheckTodoItemController,
     MeController,

@@ -6,7 +6,6 @@ import { Either, left, right } from '@/core/either';
 import { TodoRepository } from '../repositories/todo-repository';
 
 interface GetTodoByIdRequest {
-  userId: string;
   todoId: string;
 }
 
@@ -21,15 +20,11 @@ type GetTodoByIdResponse = Either<
 export class GetTodoById {
   constructor(private todoRepository: TodoRepository) {}
 
-  async execute({ todoId, userId }: GetTodoByIdRequest): Promise<GetTodoByIdResponse> {
+  async execute({ todoId }: GetTodoByIdRequest): Promise<GetTodoByIdResponse> {
     const todo = await this.todoRepository.findById(todoId);
 
     if (!todo) {
       return left(new ResourceNotFoundError());
-    }
-
-    if (todo.userId.toString() !== userId) {
-      return left(new NotAllowedError());
     }
 
     return right({

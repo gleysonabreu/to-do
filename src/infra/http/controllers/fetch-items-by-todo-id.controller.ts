@@ -1,8 +1,6 @@
 import { NotAllowedError } from '@/core/errors/errors/not-allowed-error';
 import { ResourceNotFoundError } from '@/core/errors/errors/resource-not-found-error';
 import { FetchItemsByTodoId } from '@/domain/to-do/use-cases/fetch-items-by-todo-id';
-import { CurrentUser } from '@/infra/auth/decorators/current-user.decorator';
-import { UserPayload } from '@/infra/auth/strategies/jwt.strategy';
 import {
   BadRequestException,
   Controller,
@@ -12,6 +10,7 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { TodoItemPresenter } from '../presenters/todo-item-presenter';
+import { Public } from '@/infra/auth/is-public';
 
 interface FetchItemsByTodoIdParams {
   id: string;
@@ -21,12 +20,12 @@ interface FetchItemsByTodoIdParams {
 export class FetchItemsByTodoIdController {
   constructor(private fetchItemsByTodoId: FetchItemsByTodoId) {}
 
+  @Public()
   @Get(':id/items')
-  async handle(@Param() params: FetchItemsByTodoIdParams, @CurrentUser() currentUser: UserPayload) {
+  async handle(@Param() params: FetchItemsByTodoIdParams) {
     const { id: todoId } = params;
-    const { sub: userId } = currentUser;
 
-    const result = await this.fetchItemsByTodoId.execute({ todoId, userId });
+    const result = await this.fetchItemsByTodoId.execute({ todoId });
 
     if (result.isLeft()) {
       const error = result.value;
