@@ -30,6 +30,8 @@ import { UpdateProfileUseCase } from '@/domain/user/use-cases/update-profile';
 import { UpdateProfileController } from './controllers/update-profile.controller';
 import { FindUserByUsernameUseCase } from '@/domain/user/use-cases/find-user-by-username';
 import { FindUserByUsernameController } from './controllers/find-user-by-username.controller';
+import { FetchUsersByUsernameOrNameController } from './controllers/fetch-users-by-username-or-name.controller';
+import { FetchUsersByUsernameOrNameUseCase } from '@/domain/user/use-cases/fetch-users-by-username-or-name';
 
 @Module({
   imports: [Database, CryptographyModule],
@@ -48,6 +50,7 @@ import { FindUserByUsernameController } from './controllers/find-user-by-usernam
     UpdateAccountController,
     UpdateProfileController,
     FindUserByUsernameController,
+    FetchUsersByUsernameOrNameController,
   ],
   providers: [
     RegisterUserUseCase,
@@ -65,6 +68,7 @@ import { FindUserByUsernameController } from './controllers/find-user-by-usernam
     UpdateAccountUseCase,
     UpdateProfileUseCase,
     FindUserByUsernameUseCase,
+    FetchUsersByUsernameOrNameUseCase,
   ],
 })
 export class HttpModule {}

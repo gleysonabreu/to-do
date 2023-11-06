@@ -4,6 +4,15 @@ import { UsersRepository } from '../../src/domain/user/repositories/users-reposi
 export class InMemoryUsersRepository extends UsersRepository {
   public users: User[] = [];
 
+  async findManyUsersByUsernameOrName(usernameOrName: string): Promise<User[]> {
+    return this.users.filter(
+      (user) =>
+        user.username.includes(usernameOrName) ||
+        user.firstName.includes(usernameOrName) ||
+        user.lastName.includes(usernameOrName),
+    );
+  }
+
   async save(user: User): Promise<void> {
     const findIndex = this.users.findIndex(
       (item) => item.id.toString() === user.id.toString(),
